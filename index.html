@@ -1,154 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Rock Paper Scissors</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Custom styles -->
-    <style>
-      /* Set up a smooth gradient background and container styling CSS */
-      body {
-        background: linear-gradient(135deg, #2A7B9B, #57C785, #EDDD53);
-        border: 10px solid black;
-        padding: 20px;
-        border-radius: 30px;
-        margin: auto;
-        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
-        text-align: center;
-        font-family: Arial, sans-serif;
-        color: white;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Rock Paper Scissors - Modern UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4fc3f7;
+      --bg-dark: #0f2027;
+      --bg-light: #f0f0f0;
+      --text-dark: #111;
+    }
 
-      h1 {
-        font-size: 36px;
-        margin-bottom: 10px;
-      }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      transition: background 0.3s;
+    }
 
-      p {
-        font-size: 18px;
-        margin-bottom: 30px;
-      }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
 
-      .image-container {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-      }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+      max-width: 700px;
+      width: 100%;
+      transition: all 0.3s;
+    }
 
-      .image-item img {
-        width: 150px;
-        height: auto;
-        cursor: pointer;
-        border: 10px solid black;
-        border-radius: 50px;
-        background-color: white;
-        transition: transform 0.2s ease-in-out;
-      }
+    body.light .container {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: #111;
+    }
 
-      .image-item img:hover {
-        transform: scale(1.1);
-      }
+    .container h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
 
-      #result {
-        font-size: 24px;
-        font-weight: bold;
-        margin-top: 20px;
-        padding: 10px;
-        border: 2px dashed white;
-        display: inline-block;
-        background-color: rgba(0, 0, 0, 0.3);
-        border-radius: 10px;
-      }
-    </style>
-  </head>
+    .choices {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
 
-  <body>
-    <h1>Rock Paper Scissors Game</h1>
-    <p>Click on one of the options to play against the computer.</p>
+    .choice {
+      width: 100px;
+      height: 100px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      overflow: hidden;
+    }
 
-    <!-- Game options -->
-    <div class="image-container">
-      <!-- Rock -->
-      <div class="image-item">
-        <img
-          src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTEyL2pvYjk1OS1lbGVtZW50LWItMDEzNi14XzEuanBn.jpg"
-          alt="Rock"
-          onclick="
-            pickComputerMove();
-            let result = '';
-            if (computerMove === 'Rock') {
-              result = 'It\'s a tie!';
-            } else if (computerMove === 'Paper') {
-              result = 'You lose.';
-            } else {
-              result = 'You win!';
-            }
-            document.getElementById('result').textContent = `You picked Rock. Computer picked ${computerMove}. ${result}`;
-          "
-        />
+    .choice img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    .choice:hover {
+      transform: scale(1.1);
+    }
+
+    .score, .result {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .result {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background-color: var(--primary);
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background-color: #29b6f6;
+    }
+
+    body.light .btn {
+      background-color: #007bff;
+    }
+
+    body.light .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rock Paper Scissors</h1>
+    <p>Choose your weapon:</p>
+
+    <div class="choices">
+      <div class="choice" onclick="play('rock')">
+        <img src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTEyL2pvYjk1OS1lbGVtZW50LWItMDEzNi14XzEuanBn.jpg" alt="Rock">
       </div>
-
-      <!-- Paper -->
-      <div class="image-item">
-        <img
-          src="https://c8.alamy.com/comp/2XGFCA5/vector-lineart-icon-hand-gesture-2XGFCA5.jpg"
-          alt="Paper"
-          onclick="
-            pickComputerMove();
-            let result = '';
-            if (computerMove === 'Rock') {
-              result = 'You win!';
-            } else if (computerMove === 'Paper') {
-              result = 'It\'s a tie!';
-            } else {
-              result = 'You lose.';
-            }
-            document.getElementById('result').textContent = `You picked Paper. Computer picked ${computerMove}. ${result}`;
-          "
-        />
+      <div class="choice" onclick="play('paper')">
+        <img src="https://c8.alamy.com/comp/2XGFCA5/vector-lineart-icon-hand-gesture-2XGFCA5.jpg" alt="Paper">
       </div>
-
-      <!-- Scissors -->
-      <div class="image-item">
-        <img
-          src="https://thumbs.dreamstime.com/b/sign-victory-gesture-hand-two-fingers-raised-up-vector-illustration-80185229.jpg"
-          alt="Scissors"
-          onclick="
-            pickComputerMove();
-            let result = '';
-            if (computerMove === 'Rock') {
-              result = 'You lose.';
-            } else if (computerMove === 'Paper') {
-              result = 'You win!';
-            } else {
-              result = 'It\'s a tie!';
-            }
-            document.getElementById('result').textContent = `You picked Scissors. Computer picked ${computerMove}. ${result}`;
-          "
-        />
+      <div class="choice" onclick="play('scissors')">
+        <img src="https://thumbs.dreamstime.com/b/sign-victory-gesture-hand-two-fingers-raised-up-vector-illustration-80185229.jpg" alt="Scissors">
       </div>
     </div>
 
-    <!-- Game result displayed here -->
-    <div id="result">Make your move!</div>
+    <div class="result" id="result">Let's play!</div>
+    <div class="score" id="score">You: 0 | Computer: 0</div>
 
-    <!-- Game logic using JS -->
-    <script>
-      let computerMove = '';
-      function pickComputerMove() {
-        const randomNumber = Math.random();
-        if (randomNumber < 1 / 3) {
-          computerMove = 'Rock';
-        } else if (randomNumber < 2 / 3) {
-          computerMove = 'Paper';
-        } else {
-          computerMove = 'Scissors';
-        }
+    <div class="controls">
+      <button class="btn" onclick="resetGame()">🔁 Reset</button>
+      <button class="btn" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+  </div>
+
+  <script>
+    let userScore = 0;
+    let computerScore = 0;
+
+    function getComputerChoice() {
+      const choices = ['rock', 'paper', 'scissors'];
+      return choices[Math.floor(Math.random() * 3)];
+    }
+
+    function play(user) {
+      const computer = getComputerChoice();
+      let result = '';
+
+      if (user === computer) {
+        result = "It's a tie!";
+      } else if (
+        (user === 'rock' && computer === 'scissors') ||
+        (user === 'paper' && computer === 'rock') ||
+        (user === 'scissors' && computer === 'paper')
+      ) {
+        result = 'You win!';
+        userScore++;
+      } else {
+        result = 'You lose!';
+        computerScore++;
       }
-    </script>
-  </body>
+
+      document.getElementById('result').textContent =
+        `You chose ${user}. Computer chose ${computer}. ${result}`;
+      document.getElementById('score').textContent =
+        `You: ${userScore} | Computer: ${computerScore}`;
+    }
+
+    function resetGame() {
+      userScore = 0;
+      computerScore = 0;
+      document.getElementById('result').textContent = "Let's play!";
+      document.getElementById('score').textContent = 'You: 0 | Computer: 0';
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+    }
+  </script>
+</body>
 </html>
-<!-- End of HTML document -->
